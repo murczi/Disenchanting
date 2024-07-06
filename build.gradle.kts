@@ -7,9 +7,9 @@ plugins {
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1"
 }
 
-group = "me.shuji.basePlugin"
+group = "me.shuji.Disenchanting"
 version = "1.0.0"
-description = "basePlugin"
+description = "This plugin allows for diesnchanting onto books"
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
@@ -56,7 +56,7 @@ tasks {
 // Configure plugin.yml generation
 // - name, version, and description are inherited from the Gradle project.
 bukkitPluginYaml {
-  main = "me.shuji.basePlugin.Main"
+  main = "me.shuji.Disenchanting.Main"
   load = BukkitPluginYaml.PluginLoadOrder.STARTUP
   author = "Shuji"
   apiVersion = "1.21"
