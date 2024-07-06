@@ -7,9 +7,9 @@ plugins {
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1"
 }
 
-group = "me.shuji.notTooExpensive"
+group = "me.shuji.basePlugin"
 version = "1.0.0"
-description = "Enchanting in an anvil can't be too expensive"
+description = "basePlugin"
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
@@ -56,7 +56,7 @@ tasks {
 // Configure plugin.yml generation
 // - name, version, and description are inherited from the Gradle project.
 bukkitPluginYaml {
-  main = "me.shuji.notTooExpensive.Main"
+  main = "me.shuji.basePlugin.Main"
   load = BukkitPluginYaml.PluginLoadOrder.STARTUP
   author = "Shuji"
   apiVersion = "1.21"
