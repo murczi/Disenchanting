@@ -25,6 +25,7 @@ public class DisenchantHandler {
 			fI = fItem;
 			if (fI != null && sItem != null)
 				if (sItem.getType() == Material.BOOK) {
+					e.getInventory().setRepairCost(0);
 					if (fItem.getType() == Material.ENCHANTED_BOOK) HandleEnchantedBook(e);
 					else HandleDisenchant(e);
 				}
