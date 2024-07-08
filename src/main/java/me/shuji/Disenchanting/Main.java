@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
 
 public final class Main extends JavaPlugin implements Listener {
 
-	FileConfiguration config = getConfig();
+	public static FileConfiguration config;
 	public static Logger console;
 	private static DisenchantHandler dh;
 
@@ -48,14 +47,10 @@ public final class Main extends JavaPlugin implements Listener {
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (!e.isCancelled()) {
 			HumanEntity ent = e.getWhoClicked();
-			if (ent == null)
-				return;
 
-			Player player = (Player) ent;
 			Inventory inv = e.getInventory();
 
-			if (inv instanceof AnvilInventory) {
-				AnvilInventory ainv = (AnvilInventory) inv;
+			if (inv instanceof AnvilInventory ainv) {
 				InventoryView view = e.getView();
 				ItemStack currentItem = e.getCurrentItem();
 				if (e.getSlotType() == InventoryType.SlotType.RESULT && currentItem != null && currentItem.getType() != Material.AIR) {
@@ -70,17 +65,19 @@ public final class Main extends JavaPlugin implements Listener {
 							//region Remove enchant
 							if (dh.removeLastEnchant.containsKey(ent.getUniqueId())) {
 								if (dh.removeLastEnchant.get(ent.getUniqueId()) != null) {
-									if (firstItem.getType() == Material.ENCHANTED_BOOK) {
-										EnchantmentStorageMeta firstMeta = (EnchantmentStorageMeta) firstItem.getItemMeta();
-										Enchantment enchant = dh.removeLastEnchant.get(ent.getUniqueId());
-										firstMeta.removeStoredEnchant(enchant);
-										firstItem.setItemMeta(firstMeta);
-									} else {
-										Enchantment removeEnch = dh.removeLastEnchant.get(ent.getUniqueId());
-										firstItem.removeEnchantment(removeEnch);
+									if (firstItem != null) {
+										if (firstItem.getType() == Material.ENCHANTED_BOOK) {
+											EnchantmentStorageMeta firstMeta = (EnchantmentStorageMeta) firstItem.getItemMeta();
+											Enchantment enchant = dh.removeLastEnchant.get(ent.getUniqueId());
+											firstMeta.removeStoredEnchant(enchant);
+											firstItem.setItemMeta(firstMeta);
+										} else {
+											Enchantment removeEnch = dh.removeLastEnchant.get(ent.getUniqueId());
+											firstItem.removeEnchantment(removeEnch);
+										}
+										for (HumanEntity he : e.getClickedInventory().getViewers())
+											dh.removeLastEnchant.put(he.getUniqueId(), null);
 									}
-									for (HumanEntity he : e.getClickedInventory().getViewers())
-										dh.removeLastEnchant.put(he.getUniqueId(), null);
 								}
 							}
 							//endregion
@@ -94,6 +91,7 @@ public final class Main extends JavaPlugin implements Listener {
 	}
 
 	private void setConfig() {
+		config = getConfig();
 		config.addDefault("enabled", true);
 		config.addDefault("shouldCostXp", false);
 		config.addDefault("xpCostPerLvl", 2);

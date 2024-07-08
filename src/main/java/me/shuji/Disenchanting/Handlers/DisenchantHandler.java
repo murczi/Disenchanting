@@ -1,5 +1,6 @@
 package me.shuji.Disenchanting.Handlers;
 
+import me.shuji.Disenchanting.Main;
 import me.shuji.Disenchanting.Utils.Functions;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -17,14 +18,13 @@ public class DisenchantHandler {
 	public Map<UUID, Enchantment> removeLastEnchant = new HashMap<>();
 	public Map<UUID, Boolean> isModified = new HashMap<>();
 
-	private ItemStack fI, sI;
+	private ItemStack fI;
 
 	public DisenchantHandler(PrepareAnvilEvent e, ItemStack fItem, ItemStack sItem) {
 		if (e != null) {
 			fI = fItem;
-			sI = sItem;
-			if (fI != null && sI != null)
-				if (sI.getType() == Material.BOOK) {
+			if (fI != null && sItem != null)
+				if (sItem.getType() == Material.BOOK) {
 					if (fItem.getType() == Material.ENCHANTED_BOOK) HandleEnchantedBook(e);
 					else HandleDisenchant(e);
 				}
@@ -44,6 +44,9 @@ public class DisenchantHandler {
 		}
 		ItemStack resultBook = new ItemStack(Material.ENCHANTED_BOOK);
 		EnchantmentStorageMeta resultMeta = (EnchantmentStorageMeta) resultBook.getItemMeta();
+		if (Main.config.getBoolean("shouldCostXp")) {
+			e.getInventory().setRepairCost(meta.getStoredEnchantLevel(removeEnchant) * Main.config.getInt("xpCostPerLvl"));
+		}
 		resultMeta.addStoredEnchant(removeEnchant, meta.getStoredEnchantLevel(removeEnchant), true);
 		resultBook.setItemMeta(resultMeta);
 		meta.removeStoredEnchant(removeEnchant);
@@ -64,7 +67,9 @@ public class DisenchantHandler {
 
 		ItemStack resultBook = new ItemStack(Material.ENCHANTED_BOOK);
 		EnchantmentStorageMeta resultMeta = (EnchantmentStorageMeta) resultBook.getItemMeta();
-
+		if (Main.config.getBoolean("shouldCostXp")) {
+			e.getInventory().setRepairCost(fI.getItemMeta().getEnchantLevel(removeEnchant) * Main.config.getInt("xpCostPerLvl"));
+		}
 		resultMeta.addStoredEnchant(removeEnchant, fI.getItemMeta().getEnchantLevel(removeEnchant), true);
 		for (HumanEntity he : e.getViewers()) {
 			removeLastEnchant.put(he.getUniqueId(), removeEnchant);
