@@ -40,7 +40,7 @@ public final class Main extends JavaPlugin implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPrepareAnvil(PrepareAnvilEvent e) {
-		dh = new DisenchantHandler(e, e.getInventory().getFirstItem(), e.getInventory().getSecondItem());
+		dh = new DisenchantHandler(e, e.getInventory().getStorageContents()[0], e.getInventory().getStorageContents()[1]);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -54,12 +54,12 @@ public final class Main extends JavaPlugin implements Listener {
 				InventoryView view = e.getView();
 				ItemStack currentItem = e.getCurrentItem();
 				if (e.getSlotType() == InventoryType.SlotType.RESULT && currentItem != null && currentItem.getType() != Material.AIR) {
-					if (inv.getContents()[1] != null) {
-						if (inv.getContents()[1].getType() == Material.BOOK) {
-							ItemStack firstItem = inv.getContents()[0];
-							int amount = inv.getContents()[1].getAmount();
-							ItemStack bookItem = inv.getContents()[1];
-							view.setCursor(ainv.getResult()); //give player the disenchanted book
+					if (inv.getItem(1) != null) {
+						if (inv.getItem(1).getType() == Material.BOOK) {
+							ItemStack firstItem = inv.getItem(0);
+							int amount = inv.getItem(1).getAmount();
+							ItemStack bookItem = inv.getItem(1);
+							view.setCursor(ainv.getItem(2)); //give player the disenchanted book
 							bookItem.setAmount(amount - 1); //remove one book
 
 							//region Remove enchant
