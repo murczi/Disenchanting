@@ -8,8 +8,8 @@ plugins {
 }
 
 group = "me.shuji.Disenchanting"
-version = "1.0.0"
-description = "This plugin allows for diesnchanting onto books"
+version = "1.1.0"
+description = "This plugin allows for disenchanting onto books"
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
