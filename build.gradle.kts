@@ -42,15 +42,11 @@ tasks {
   javadoc {
     options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
   }
-
-  // Only relevant when going with option 2 above
-  /*
-  reobfJar {
-    // This is an example of how you might change the output location for reobfJar. It's recommended not to do this
-    // for a variety of reasons, however it's asked frequently enough that an example of how to do it is included here.
-    outputJar = layout.buildDirectory.file("libs/PaperweightTestPlugin-${project.version}.jar")
-  }
-   */
+	jar{
+		manifest{
+			archiveFileName.set("Disenchanting.jar")
+		}
+	}
 }
 
 // Configure plugin.yml generation
